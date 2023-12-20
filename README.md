@@ -33,7 +33,7 @@ Este proyecto consiste en un juego de cartas simple desarrollado con HTML, CSS y
 
 ## Créditos
 
-Este juego fue desarrollado por [Tu Nombre].
+Este juego fue desarrollado por @CarlosCarballido.
 
 ---
 
