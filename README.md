@@ -1,4 +1,4 @@
-![image](https://github.com/CarlosCarballido/navigatorGame/assets/127395820/165b278c-d227-4834-bcd0-5aadebc66efc)# Juego de Cartas en HTML
+# Juego de Cartas en HTML
 
 ![image](https://github.com/CarlosCarballido/navigatorGame/assets/127395820/6824784b-0ce6-4d86-876c-618557b05558)
 
