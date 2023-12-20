@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    #game-info {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      gap: 10px;
+    }
+
+    .card {
+      width: 100px;
+      height: 150px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+  <title>Juego de Cartas</title>
+</head>
+<body>
+  <div id="game-info">
+    <div id="level-counter">Nivel: 1</div>
+    <div id="attempts-counter">Intentos: 0</div>
+  </div>
+  <div id="game-board"></div>
+  <div id="message"></div>
+
+  <script>
+    const levels = [
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+      ['1', '2', '3', '4', '5', '6', '7', '8', '1', '2', '3', '4', '5', '6', '7', '8'],
+      ['X', 'Y', 'Z', 'W', 'X', 'Y', 'Z', 'W', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    ];
+
+    let currentLevel = 0;
+    let flippedCards = [];
+    let matchedCards = [];
+    let attempts = 0;
+
+    function shuffle(array) {
+      let currentIndex = array.length, randomIndex;
+    
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+    
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      }
+    
+      return array;
+    }
+
+    function createCard(value, index) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.index = index;
+      card.textContent = '?'; // Ocultar la letra inicialmente
+      card.addEventListener('click', flipCard);
+      document.getElementById('game-board').appendChild(card);
+    }
+
+    function flipCard() {
+      const card = this;
+      const index = card.dataset.index;
+
+      if (flippedCards.length < 2 && !flippedCards.includes(index)) {
+        card.textContent = levels[currentLevel][index];
+        flippedCards.push(index);
+
+        if (flippedCards.length === 2) {
+          attempts++;
+          updateAttemptsCounter();
+          setTimeout(checkMatch, 1000);
+        }
+      }
+    }
+
+    function updateAttemptsCounter() {
+      document.getElementById('attempts-counter').textContent = `Intentos: ${attempts}`;
+    }
+
+    function checkMatch() {
+      const [index1, index2] = flippedCards;
+      const card1 = document.querySelector(`[data-index="${index1}"]`);
+      const card2 = document.querySelector(`[data-index="${index2}"]`);
+
+      if (levels[currentLevel][index1] === levels[currentLevel][index2]) {
+        matchedCards.push(index1, index2);
+        if (matchedCards.length === levels[currentLevel].length) {
+          showResult();
+        }
+      } else {
+        card1.textContent = '?';
+        card2.textContent = '?';
+      }
+
+      flippedCards = [];
+    }
+
+    function showResult() {
+      const messageElement = document.getElementById('message');
+      messageElement.textContent = `¡Felicidades! Has completado el nivel ${currentLevel + 1} en ${attempts} intentos.`;
+
+      if (currentLevel < levels.length - 1) {
+        setTimeout(() => {
+          const nextLevel = confirm('¿Quieres pasar al siguiente nivel?');
+          if (nextLevel) {
+            startNextLevel();
+          }
+        }, 500);
+      } else {
+        setTimeout(() => {
+          const playAgain = confirm('¡Has completado todos los niveles! ¿Quieres jugar de nuevo?');
+          if (playAgain) {
+            restartGame();
+          }
+        }, 500);
+      }
+    }
+
+    function startNextLevel() {
+      currentLevel++;
+      document.getElementById('level-counter').textContent = `Nivel: ${currentLevel + 1}`;
+      const gameBoard = document.getElementById('game-board');
+      const messageElement = document.getElementById('message');
+
+      gameBoard.innerHTML = '';
+      messageElement.textContent = '';
+      attempts = 0;
+      flippedCards = [];
+      matchedCards = [];
+
+      const shuffledCards = shuffle(levels[currentLevel]);
+      shuffledCards.forEach(createCard);
+    }
+
+    function restartGame() {
+      currentLevel = 0;
+      document.getElementById('level-counter').textContent = 'Nivel: 1';
+      const gameBoard = document.getElementById('game-board');
+      const messageElement = document.getElementById('message');
+
+      gameBoard.innerHTML = '';
+      messageElement.textContent = '';
+      attempts = 0;
+      flippedCards = [];
+      matchedCards = [];
+
+      const shuffledCards = shuffle(levels[currentLevel]);
+      shuffledCards.forEach(createCard);
+    }
+
+    function initializeGame() {
+      const shuffledCards = shuffle(levels[currentLevel]);
+      shuffledCards.forEach(createCard);
+    }
+
+    initializeGame();
+  </script>
+</body>
+</html>
