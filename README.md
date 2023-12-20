@@ -1,5 +1,9 @@
 # Juego de Cartas en HTML
 
+## Enlace al Juego en Línea
+
+Juega al juego directamente en línea [aquí]((https://carlosredes.alwaysdata.net/REDES1)).
+
 ![image](https://github.com/CarlosCarballido/navigatorGame/assets/127395820/6824784b-0ce6-4d86-876c-618557b05558)
 
 ## Descripción del Proyecto
