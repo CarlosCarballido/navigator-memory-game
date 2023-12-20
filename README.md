@@ -14,7 +14,7 @@ Este proyecto consiste en un juego de cartas simple desarrollado con HTML, CSS y
 
 ## Cómo Jugar
 
-1. Abre el archivo `index.html` en tu navegador.
+1. Abre el archivo `hello.html` en tu navegador.
 2. Haz clic en las cartas para voltearlas y encuentra todas las parejas.
 3. Supera todos los niveles y completa el juego.
 
